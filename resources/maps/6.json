@@ -1,0 +1,58 @@
+{ "compressionlevel":-1,
+ "height":8,
+ "infinite":false,
+ "layers":[
+        {
+         "data":[2, 1, 2, 1, 2, 1, 2, 1,
+            1, 15, 13, 13, 13, 13, 13, 2,
+            2, 9, 5, 5, 5, 2, 13, 1,
+            1, 7, 7, 7, 7, 6, 13, 13,
+            2, 7, 7, 7, 7, 6, 13, 13,
+            1, 7, 7, 7, 1, 7, 2, 1,
+            2, 7, 7, 7, 7, 7, 7, 2,
+            1, 2, 1, 7, 7, 1, 2, 1],
+         "height":8,
+         "id":1,
+         "name":"Camada de Blocos 1",
+         "opacity":1,
+         "type":"tilelayer",
+         "visible":true,
+         "width":8,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "data":[0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 21, 19,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 20, 0, 0, 0, 0],
+         "height":8,
+         "id":2,
+         "name":"Camada de Blocos 2",
+         "opacity":1,
+         "type":"tilelayer",
+         "visible":false,
+         "width":8,
+         "x":0,
+         "y":0
+        }],
+ "nextlayerid":3,
+ "nextobjectid":1,
+ "orientation":"orthogonal",
+ "renderorder":"right-down",
+ "tiledversion":"1.10.1",
+ "tileheight":2,
+ "tilesets":[
+        {
+         "firstgid":1,
+         "source":"tileset.tsj"
+        }],
+ "tilewidth":2,
+ "type":"map",
+ "version":"1.10",
+ "width":8
+}

@@ -1,0 +1,43 @@
+// TODO cross-platform support
+
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "⚙️🔧 Setup Debug",
+            "type": "shell",
+            "problemMatcher": "$gcc",
+            "command": "cmake -DCMAKE_BUILD_TYPE=DEBUG ../.. -G \"MinGW Makefiles\"",
+            "options": {
+                "cwd": "${workspaceRoot}/build/debug"
+            }
+        },
+        {
+            "label": "🔧 Build Debug",
+            "type": "shell",
+            "problemMatcher": "$gcc",
+            "command": "cmake --build . --parallel",
+            "options": {
+                "cwd": "${workspaceRoot}/build/debug"
+            }
+        },
+        {
+            "label": "⚙️🚀 Setup Release",
+            "type": "shell",
+            "problemMatcher": "$gcc",
+            "command": "cmake -DCMAKE_BUILD_TYPE=RELEASE ../.. -G \"MinGW Makefiles\"",
+            "options": {
+                "cwd": "${workspaceRoot}/build/release"
+            }
+        },
+        {
+            "label": "🚀 Build Release",
+            "type": "shell",
+            "problemMatcher": "$gcc",
+            "command": "cmake --build . --parallel",
+            "options": {
+                "cwd": "${workspaceRoot}/build/release"
+            }
+        }
+    ]
+}
