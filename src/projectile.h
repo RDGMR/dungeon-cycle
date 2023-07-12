@@ -14,11 +14,10 @@ public:
     Rectangle getRect();
 
 private:
-    int variation;
+    float scale;
     float speed;
-    float rotation;
     Rectangle rect;
-    Texture2D sprite;
     Vector2 direction;
+    Color color;
 
 };

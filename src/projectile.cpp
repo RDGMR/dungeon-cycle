@@ -5,19 +5,16 @@
 
 Projectile::Projectile(Cache *cache, Vector2 pos, Vector2 direction, float scale)
 {
-    this->variation = GetRandomValue(1, 4);
+    this->scale = scale;
     this->speed = 600.0f;
-    this->rect = { pos.x, pos.y, 2.0f*scale, 2.0f*scale };
-    this->sprite = cache->getTexture("resources/sprites/projectile" + std::to_string(variation) + ".png");
+    this->rect = { pos.x, pos.y, scale, scale };
     this->direction = direction;
-    if (direction.x == 1.0f && direction.y == 0.0f)
-        this->rotation = 0.0f;
-    else if (direction.x == 0.0f && direction.y == 1.0f)
-        this->rotation = 90.0f;
-    else if (direction.x == -1.0f && direction.y == 0.0f)
-        this->rotation = 180.0f;
-    else if (direction.x == 0.0f && direction.y == -1.0f)
-        this->rotation = 270.0f;
+    this->color = GetRandomValue(0, 1) == 0 ? (Color){ 255, 255, 255, 255} : (Color){ 192, 203, 220, 255 };
+
+    rect.x += (direction.x > 0) * scale;
+    rect.y += (direction.y == 0) * GetRandomValue(0, 1) * scale;
+    rect.y += (direction.y > 0) * scale;
+    rect.x += (direction.x == 0) * GetRandomValue(0, 1) * scale;
 }
 
 void Projectile::update(float delta)
@@ -28,7 +25,7 @@ void Projectile::update(float delta)
 
 void Projectile::draw()
 {
-    DrawTexturePro(sprite, { 0.0f, 0.0f, 2.0f, 2.0f }, { rect.x+rect.width/2, rect.y+rect.height/2, rect.width, rect.height }, { rect.width/2, rect.height/2 }, rotation, WHITE);
+    DrawRectangleRec(rect, color);
 }
 
 Rectangle Projectile::getRect()
