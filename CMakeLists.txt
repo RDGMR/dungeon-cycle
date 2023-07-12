@@ -29,10 +29,10 @@ add_custom_target(copy_assets
     COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_LIST_DIR}/resources ${CMAKE_CURRENT_BINARY_DIR}/resources
 )
 
-# if (${CMAKE_SYSTEM_NAME} MATCHES "Windows")
-#     enable_language("RC")
-#     set(WIN32_RESOURCES cycles.rc)
-# endif()
+if (CMAKE_BUILD_TYPE STREQUAL "RELEASE" AND ${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+    enable_language("RC")
+    set(WIN32_RESOURCES resources/windows/cycles.rc)
+endif()
 
 #add_compile_options(-Wall -Wextra -pedantic)
 file(GLOB_RECURSE APP_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} src/*)
