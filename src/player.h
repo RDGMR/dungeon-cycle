@@ -38,10 +38,10 @@ private:
     Vector2 facing;
     Vector2 oldPos;
 
-    int UP;
-    int DOWN;
-    int RIGHT;
-    int LEFT;
+    short UP;
+    short DOWN;
+    short RIGHT;
+    short LEFT;
 
     ProjectileManager *projectileManager;
 
