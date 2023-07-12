@@ -118,7 +118,7 @@ void Player::update(float delta, std::vector<Tile> map, std::vector<Enemy> enemi
         if (std::abs(move.x+move.y) == 1)
             facing = move;
 
-        if (IsKeyDown(KEY_Z) && shootTimer >= shootCooldown)
+        if (!dead && IsKeyDown(KEY_Z) && shootTimer >= shootCooldown)
         {
             shootTimer = 0.0f;
             projectileManager->shoot({ rect.x, rect.y }, facing);
