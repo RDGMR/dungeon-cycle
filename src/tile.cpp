@@ -5,6 +5,8 @@
 
 Tile::Tile(Cache *cache, float rotation, float scale, int id, float x, float y)
 {
+    this->scale = scale;
+    this->rotation = rotation * -1;
     this->disabled = false;
     this->solid = false;
     this->visible = true;
@@ -61,7 +63,7 @@ Tile::Tile(Cache *cache, float rotation, float scale, int id, float x, float y)
 void Tile::draw()
 {
     if (visible && !disabled)
-        DrawTexturePro(sprite, { 0.0f+spriteOffset, 0.0f, 2.0f, 2.0f }, rect, { 0.0f, 0.0f }, 0.0f, WHITE);
+        DrawTexturePro(sprite, { 0.0f+spriteOffset, 0.0f, 2.0f, 2.0f }, { rect.x+scale, rect.y+scale, rect.width, rect.height }, { rect.width/2, rect.height/2 }, rotation, WHITE);
 }
 
 void Tile::loadSprite(int id)
@@ -116,8 +118,3 @@ void Tile::setDisabled(bool disabled)
 {
     this->disabled = disabled;
 }
-
-// Vector2 Tile::getCenter()
-// {
-//     return { rect.x + rect.width/2, rect.y + rect.height/2 };
-// }

@@ -18,10 +18,11 @@ public:
     void setDisabled(bool disabled);
     bool isSolid();
     bool isTrigger();
-    // Vector2 getCenter();
 
 private:
     int spriteOffset;
+    float scale;
+    float rotation;
     float direction;
     bool disabled;
     bool solid;
