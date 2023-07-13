@@ -22,10 +22,7 @@ void Player::init(Game *game, Cache *cache, ProjectileManager *projectileManager
     this->facing = { 1.0f, 0.0f };
     this->oldPos = { rect.x, rect.y };
 
-    this->UP = KEY_UP;
-    this->DOWN = KEY_DOWN;
-    this->RIGHT = KEY_RIGHT;
-    this->LEFT = KEY_LEFT;
+    this->keys = { KEY_UP, KEY_RIGHT, KEY_LEFT, KEY_DOWN };
 
     this->projectileManager = projectileManager;
 }
@@ -69,8 +66,8 @@ void Player::update(float delta, std::vector<Tile> map, std::vector<Enemy> enemi
     {
         if (!dead)
         {
-            move.x += IsKeyDown(RIGHT) - IsKeyDown(LEFT);
-            move.y += IsKeyDown(DOWN) - IsKeyDown(UP);
+            move.x += IsKeyDown(keys[1]) - IsKeyDown(keys[2]);
+            move.y += IsKeyDown(keys[3]) - IsKeyDown(keys[0]);
         }
     
         rect.x += move.x * 300.0f * delta;
@@ -156,39 +153,29 @@ void Player::setRotation(float rotation)
     if (rot < 0)
         rot += 360;
     this->rotation = rot;
-
-    if      (rot == 0.0f)
-    {
-        UP = KEY_UP;
-        DOWN = KEY_DOWN;
-        RIGHT = KEY_RIGHT;
-        LEFT = KEY_LEFT;
-    }
-    else if (rot == 90.0f)
-    {
-        UP = KEY_RIGHT;
-        DOWN = KEY_LEFT;
-        RIGHT = KEY_DOWN;
-        LEFT = KEY_UP;
-    }
-    else if (rot == 180.0f)
-    {
-        UP = KEY_DOWN;
-        DOWN = KEY_UP;
-        RIGHT = KEY_LEFT;
-        LEFT = KEY_RIGHT;
-    }
-    else if (rot == 270.0f)
-    {
-        UP = KEY_LEFT;
-        DOWN = KEY_RIGHT;
-        RIGHT = KEY_UP;
-        LEFT = KEY_DOWN;
-    }
 }
 
 void Player::setDirection(float direction)
 {
+    short temp = keys[0];
+    
+    if (direction < 0)
+    {
+        // Clockwise (backwards)
+        keys[0] = keys[1];
+        keys[1] = keys[3];
+        keys[3] = keys[2];
+        keys[2] = temp;
+    }
+    else
+    {
+        // Counterclockwise (forwards)
+        keys[0] = keys[2];
+        keys[2] = keys[3];
+        keys[3] = keys[1];
+        keys[1] = temp;
+    }
+
     this->direction = direction;
 }
 

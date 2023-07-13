@@ -38,10 +38,7 @@ private:
     Vector2 facing;
     Vector2 oldPos;
 
-    short UP;
-    short DOWN;
-    short RIGHT;
-    short LEFT;
+    std::vector<short> keys;
 
     ProjectileManager *projectileManager;
 
