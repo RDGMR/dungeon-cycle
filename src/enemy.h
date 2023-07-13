@@ -9,7 +9,7 @@ class Tile;
 class Enemy
 {
 public:
-    Enemy(Cache *cache, int mapOrigin, float scale, float rotation, float x, float y);
+    Enemy(Cache *cache, float scale, float rotation, float x, float y);
     void update(float delta, Vector2 playerPos, std::vector<Tile> map);
     void draw();
 
@@ -24,8 +24,10 @@ public:
 private:
     bool disabled;
     bool paused;
-    int mapOrigin;
     int hp;
+    float hurtDuration;
+    float hurtTimer;
+    float hurtProgress;
     Rectangle rect;
     Texture2D sprite;
 

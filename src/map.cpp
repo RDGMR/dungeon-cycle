@@ -72,7 +72,7 @@ void Map::loadMap(int currentMap)
                 {
                     if (mapArray[l][y][x] == 21)
                     {
-                        newEnemies.push_back(Enemy(cache, 0, scale, rotation, 2.0f * x, 2.0f * y));
+                        newEnemies.push_back(Enemy(cache, scale, rotation, 2.0f * x, 2.0f * y));
                     }
                     else
                     {

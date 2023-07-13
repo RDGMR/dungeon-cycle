@@ -1,14 +1,15 @@
 #include "enemy.h"
 #include "cache.h"
 #include "tile.h"
-#include <iostream>
 
-Enemy::Enemy(Cache *cache, int mapOrigin, float scale, float rotation, float x, float y)
+Enemy::Enemy(Cache *cache, float scale, float rotation, float x, float y)
 {
     this->disabled = false;
     this->paused = false;
-    this->mapOrigin = mapOrigin;
     this->hp = 3;
+    this->hurtDuration = 0.5f;
+    this->hurtTimer = 0.0f;
+    this->hurtProgress = 0.0f;
     this->sprite = cache->getTexture("resources/sprites/enemy.png");
     this->rect = { x*scale, y*scale, 2.0f * scale, 2.0f * scale };
 
@@ -67,12 +68,22 @@ void Enemy::update(float delta, Vector2 playerPos, std::vector<Tile> map)
             }
         }
     }
+
+    if (hurtTimer > 0)
+    {
+        hurtTimer -= delta;
+        hurtProgress = hurtTimer / hurtDuration;
+        hurtProgress = std::clamp(hurtProgress, 0.0f, 1.0f);
+    }
 }
 
 void Enemy::draw()
 {
     if (!disabled)
+    {
         DrawTexturePro(sprite, { 0.0f, 0.0f, 2.0f, 2.0f }, rect, { 0.0f, 0.0f }, 0.0f, WHITE);
+        DrawRectangleRec(rect, { 255, 255, 255, hurtProgress*255 });
+    }
 }
 
 void Enemy::setDisabled(bool disabled)
@@ -85,11 +96,6 @@ void Enemy::setPaused(bool paused)
     this->paused = paused;
 }
 
-int Enemy::getMapOrigin()
-{
-    return mapOrigin;
-}
-
 Rectangle Enemy::getRect()
 {
     return rect;
@@ -98,6 +104,7 @@ Rectangle Enemy::getRect()
 void Enemy::damage()
 {
     hp--;
+    hurtTimer = hurtDuration;
 }
 
 int Enemy::getHp()
