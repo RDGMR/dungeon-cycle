@@ -6,6 +6,7 @@ Enemy::Enemy(Cache *cache, float scale, float rotation, float x, float y)
 {
     this->disabled = false;
     this->paused = false;
+    this->dead = false;
     this->hp = 3;
     this->hurtDuration = 0.5f;
     this->hurtTimer = 0.0f;
@@ -26,7 +27,7 @@ Enemy::Enemy(Cache *cache, float scale, float rotation, float x, float y)
 
 void Enemy::update(float delta, Vector2 playerPos, std::vector<Tile> map)
 {
-    if (!paused)
+    if (!paused && !dead)
     {
 
     Vector2 move = {
@@ -81,8 +82,8 @@ void Enemy::draw()
 {
     if (!disabled)
     {
-        DrawTexturePro(sprite, { 0.0f, 0.0f, 2.0f, 2.0f }, rect, { 0.0f, 0.0f }, 0.0f, WHITE);
-        DrawRectangleRec(rect, { 255, 255, 255, hurtProgress*255 });
+        DrawTexturePro(sprite, { 2.0f*dead, 0.0f, 2.0f, 2.0f }, rect, { 0.0f, 0.0f }, 0.0f, WHITE);
+        DrawRectangleRec(rect, { 255, 255, 255, static_cast<unsigned char>(hurtProgress*255) });
     }
 }
 
@@ -105,9 +106,11 @@ void Enemy::damage()
 {
     hp--;
     hurtTimer = hurtDuration;
+
+    if (hp <= 0) dead = true;
 }
 
-int Enemy::getHp()
+bool Enemy::isDead()
 {
-    return hp;
+    return dead;
 }

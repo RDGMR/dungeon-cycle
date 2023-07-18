@@ -27,7 +27,7 @@ void ProjectileManager::update(float delta, std::vector<Tile> map, std::vector<E
                 break;
             }
         for (auto &enemy : *enemies)
-            if (CheckCollisionRecs(it->getRect(), enemy.getRect()))
+            if (!enemy.isDead() && CheckCollisionRecs(it->getRect(), enemy.getRect()))
             {
                 erase = true;
                 enemy.damage();

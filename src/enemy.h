@@ -16,14 +16,14 @@ public:
     void damage();
     void setDisabled(bool disabled);
     void setPaused(bool paused);
-    int getMapOrigin();
-    int getHp();
 
+    bool isDead();
     Rectangle getRect();
 
 private:
     bool disabled;
     bool paused;
+    bool dead;
     int hp;
     float hurtDuration;
     float hurtTimer;

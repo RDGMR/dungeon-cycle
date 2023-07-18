@@ -16,15 +16,8 @@ void Map::init(Cache *cache, float scale)
 void Map::update(float delta, Vector2 playerPos)
 {
     for (auto &enemies : EnemyAreas)
-        for (auto it = enemies.begin(); it != enemies.end();)
-        {
-            it->update(delta, playerPos, areas[currentMap]);
-
-            if (it->getHp() <= 0)
-                it = enemies.erase(it);
-            else
-                it++;
-        }
+        for (auto &enemy : enemies)
+            enemy.update(delta, playerPos, areas[currentMap]);
 }
 
 void Map::draw()

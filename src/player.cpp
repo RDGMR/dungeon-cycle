@@ -123,7 +123,7 @@ void Player::update(float delta, std::vector<Tile> map, std::vector<Enemy> enemi
 
         for (auto &enemy : enemies)
         {
-            if (CheckCollisionRecs(rect, enemy.getRect()))
+            if (!enemy.isDead() && CheckCollisionRecs(rect, enemy.getRect()))
                 dead = true;
         }
 
