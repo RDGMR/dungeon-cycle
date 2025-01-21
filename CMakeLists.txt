@@ -1,7 +1,5 @@
-# Thank you siddharthroy12
-
 cmake_minimum_required(VERSION 3.0)
-project(cycles CXX) # TODO Project name
+project(dungeon-cycle CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -12,17 +10,29 @@ set(BUILD_GAMES    OFF CACHE BOOL "" FORCE) # or games
 if (EMSCRIPTEN)
   set(PLATFORM Web CACHE BOOL "" FORCE)
 endif()
-#set(GRAPHICS GRAPHICS_API_OPENGL_11 CACHE BOOL "" FORCE) # use opengl 1.1
+
+include(FetchContent)
+set(FETCHCONTENT_QUIET FALSE)
+
+FetchContent_Declare(
+  raylib
+  GIT_REPOSITORY "https://github.com/raysan5/raylib.git"
+  GIT_TAG "5.5"
+  GIT_PROGRESS TRUE
+)
+FetchContent_Declare(
+  json
+  URL https://github.com/nlohmann/json/releases/download/v3.11.3/json.tar.xz
+)
+
+FetchContent_MakeAvailable(raylib json)
 
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DDEBUG")
-
-add_subdirectory(libs/raylib)
 
 if (EMSCRIPTEN)
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -s USE_GLFW=3 -s ASSERTIONS=1 -s WASM=1 -s ASYNCIFY --shell-file ../../template.html")
     # This line is used to set your executable to build with the emscripten html template so that you can directly open it.
     set(CMAKE_EXECUTABLE_SUFFIX ".html")
-
 endif()
 
 add_custom_target(copy_assets
@@ -52,4 +62,4 @@ target_compile_definitions(${CMAKE_PROJECT_NAME} PUBLIC PROJECT_NAME="${CMAKE_PR
 if (EMSCRIPTEN)
   set_target_properties(${CMAKE_PROJECT_NAME} PROPERTIES LINK_FLAGS "--preload-file resources")
 endif()
-target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE raylib)
+target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE raylib nlohmann_json::nlohmann_json)

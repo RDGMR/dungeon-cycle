@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <fstream>
 #include "raylib.h"
-#include "../libs/json/single_include/nlohmann/json.hpp"
+#include "nlohmann/json.hpp"
 
 class Cache;
 

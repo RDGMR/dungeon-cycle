@@ -5,7 +5,7 @@
 #include <fstream>
 #include "tile.h"
 #include "enemy.h"
-#include "../libs/json/single_include/nlohmann/json.hpp"
+#include "nlohmann/json.hpp"
 
 class Cache;
 
