@@ -57,7 +57,7 @@ Tile::Tile(Cache *cache, float rotation, float scale, int id, float x, float y)
         if (exitTrigger){
             rect.x -= 2.0f * scale;}
     }
-    this->sprite = cache->getTexture("resources/sprites/tileset.png");
+    this->sprite = cache->getTexture(ASSETS_PATH "sprites/tileset.png");
 }
 
 void Tile::draw()
@@ -70,7 +70,7 @@ void Tile::loadSprite(int id)
 {
     this->spriteOffset = (id-1) * 2.0f;
 
-    std::ifstream f("resources/maps/tileset.tsj");
+    std::ifstream f(ASSETS_PATH "maps/tileset.tsj");
     nlohmann::json data = nlohmann::json::parse(f);
 
     for (auto tile : data["tiles"])

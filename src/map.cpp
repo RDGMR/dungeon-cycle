@@ -82,7 +82,7 @@ void Map::loadMap(int currentMap)
 
 std::vector<std::vector<std::vector<int>>> Map::loadMapArray(int currentMap)
 {
-    std::ifstream f(TextFormat("resources/maps/%i.json", currentMap));
+    std::ifstream f(TextFormat(ASSETS_PATH "maps/%i.json", currentMap));
     nlohmann::json data = nlohmann::json::parse(f);
 
     int qntLayers = data["layers"].size();

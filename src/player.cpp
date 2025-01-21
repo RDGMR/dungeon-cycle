@@ -18,7 +18,7 @@ void Player::init(Game *game, Cache *cache, ProjectileManager *projectileManager
     this->shootCooldown = 0.5f;
     this->shootTimer = shootCooldown;
     this->rect = { 7.0f*scale, 7.0f*scale, 2.0f*scale, 2.0f*scale };
-    this->sprite = cache->getTexture("resources/sprites/player.png");
+    this->sprite = cache->getTexture(ASSETS_PATH "sprites/player.png");
     this->facing = { 1.0f, 0.0f };
     this->oldPos = { rect.x, rect.y };
 

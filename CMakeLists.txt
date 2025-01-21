@@ -36,12 +36,12 @@ if (EMSCRIPTEN)
 endif()
 
 add_custom_target(copy_assets
-    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_LIST_DIR}/resources ${CMAKE_CURRENT_BINARY_DIR}/resources
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_LIST_DIR}/assets ${CMAKE_CURRENT_BINARY_DIR}/assets
 )
 
 if (CMAKE_BUILD_TYPE STREQUAL "RELEASE" AND ${CMAKE_SYSTEM_NAME} MATCHES "Windows")
     enable_language("RC")
-    set(WIN32_RESOURCES resources/windows/cycles.rc)
+    set(WIN32_RESOURCES assets/windows/cycles.rc)
 endif()
 
 #add_compile_options(-Wall -Wextra -pedantic)
@@ -54,12 +54,13 @@ if(NOT CMAKE_BUILD_TYPE STREQUAL "DEBUG")
 endif()
 
 add_dependencies(${CMAKE_PROJECT_NAME} copy_assets)
+target_compile_definitions(${CMAKE_PROJECT_NAME} PUBLIC ASSETS_PATH="${CMAKE_CURRENT_SOURCE_DIR}/assets/")
 
 # Set version number
 target_compile_definitions(${CMAKE_PROJECT_NAME} PUBLIC VERSION="1.0.0")
 target_compile_definitions(${CMAKE_PROJECT_NAME} PUBLIC PROJECT_NAME="${CMAKE_PROJECT_NAME}")
 
 if (EMSCRIPTEN)
-  set_target_properties(${CMAKE_PROJECT_NAME} PROPERTIES LINK_FLAGS "--preload-file resources")
+  set_target_properties(${CMAKE_PROJECT_NAME} PROPERTIES LINK_FLAGS "--preload-file assets")
 endif()
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE raylib nlohmann_json::nlohmann_json)

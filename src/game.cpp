@@ -41,8 +41,8 @@ void Game::run()
 {
     InitWindow(windowWidth, windowHeight, "CYCLES");
     this->screen = LoadRenderTexture(windowWidth*2.0f, windowHeight*2.0f);
-    this->splashSprite = LoadTexture("resources/sprites/splash.png");
-    this->deadSprite = LoadTexture("resources/sprites/dead.png");
+    this->splashSprite = LoadTexture(ASSETS_PATH "sprites/splash.png");
+    this->deadSprite = LoadTexture(ASSETS_PATH "sprites/dead.png");
 
     map.init(&cache, scale);
     player.init(this, &cache, &projectileManager, scale);

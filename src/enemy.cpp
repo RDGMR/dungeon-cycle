@@ -11,7 +11,7 @@ Enemy::Enemy(Cache *cache, float scale, float rotation, float x, float y)
     this->hurtDuration = 0.5f;
     this->hurtTimer = 0.0f;
     this->hurtProgress = 0.0f;
-    this->sprite = cache->getTexture("resources/sprites/enemy.png");
+    this->sprite = cache->getTexture(ASSETS_PATH "sprites/enemy.png");
     this->rect = { x*scale, y*scale, 2.0f * scale, 2.0f * scale };
 
     if (rotation == 90.0f)
