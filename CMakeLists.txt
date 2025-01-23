@@ -4,6 +4,10 @@ project(dungeon-cycle CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+
 # Setting parameters for raylib
 set(BUILD_EXAMPLES OFF CACHE BOOL "" FORCE) # don't build the supplied examples
 set(BUILD_GAMES    OFF CACHE BOOL "" FORCE) # or games
@@ -35,26 +39,26 @@ if (EMSCRIPTEN)
     set(CMAKE_EXECUTABLE_SUFFIX ".html")
 endif()
 
-add_custom_target(copy_assets
-    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_LIST_DIR}/assets ${CMAKE_CURRENT_BINARY_DIR}/assets
-)
-
-if (CMAKE_BUILD_TYPE STREQUAL "RELEASE" AND ${CMAKE_SYSTEM_NAME} MATCHES "Windows")
-    enable_language("RC")
-    set(WIN32_RESOURCES assets/windows/cycles.rc)
-endif()
-
 #add_compile_options(-Wall -Wextra -pedantic)
 file(GLOB_RECURSE APP_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} src/*)
 add_executable(${CMAKE_PROJECT_NAME} ${APP_SOURCES} ${WIN32_RESOURCES})
 
-# Conditionally set the WIN32 property if not debug
-if(NOT CMAKE_BUILD_TYPE STREQUAL "DEBUG")
-    set_target_properties(${CMAKE_PROJECT_NAME} PROPERTIES WIN32_EXECUTABLE true)
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+  target_compile_definitions(${CMAKE_PROJECT_NAME} PUBLIC ASSETS_PATH="${CMAKE_CURRENT_SOURCE_DIR}/assets/")
+else()
+  set_target_properties(${CMAKE_PROJECT_NAME} PROPERTIES WIN32_EXECUTABLE true)
+
+  add_custom_target(copy_assets
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_LIST_DIR}/assets ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/assets
+  )
+  add_dependencies(${CMAKE_PROJECT_NAME} copy_assets)
+  target_compile_definitions(${CMAKE_PROJECT_NAME} PUBLIC ASSETS_PATH="./assets/")
 endif()
 
-add_dependencies(${CMAKE_PROJECT_NAME} copy_assets)
-target_compile_definitions(${CMAKE_PROJECT_NAME} PUBLIC ASSETS_PATH="${CMAKE_CURRENT_SOURCE_DIR}/assets/")
+if (CMAKE_BUILD_TYPE STREQUAL "Release" AND ${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+    enable_language("RC")
+    set(WIN32_RESOURCES assets/windows/cycles.rc)
+endif()
 
 # Set version number
 target_compile_definitions(${CMAKE_PROJECT_NAME} PUBLIC VERSION="1.0.0")
