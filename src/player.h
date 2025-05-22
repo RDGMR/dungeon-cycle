@@ -38,8 +38,6 @@ private:
     Vector2 facing;
     Vector2 oldPos;
 
-    std::vector<short> keys;
-
     ProjectileManager *projectileManager;
 
     float linearEasing(double start, double end, double duration, double time);

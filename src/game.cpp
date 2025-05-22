@@ -39,7 +39,7 @@ Game::Game()
 
 void Game::run()
 {
-    InitWindow(windowWidth, windowHeight, "CYCLES");
+    InitWindow(windowWidth, windowHeight, "Dungeon Cycle");
     this->screen = LoadRenderTexture(windowWidth*2.0f, windowHeight*2.0f);
     this->splashSprite = LoadTexture(ASSETS_PATH "sprites/splash.png");
     this->deadSprite = LoadTexture(ASSETS_PATH "sprites/dead.png");

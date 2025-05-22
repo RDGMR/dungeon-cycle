@@ -5,8 +5,6 @@
 #include "enemy.h"
 #include "tile.h"
 
-#include <iostream>
-
 void Player::init(Game *game, Cache *cache, ProjectileManager *projectileManager, float scale)
 {
     this->game = game;
@@ -22,14 +20,12 @@ void Player::init(Game *game, Cache *cache, ProjectileManager *projectileManager
     this->facing = { 1.0f, 0.0f };
     this->oldPos = { rect.x, rect.y };
 
-    this->keys = { KEY_UP, KEY_RIGHT, KEY_LEFT, KEY_DOWN };
-
     this->projectileManager = projectileManager;
 }
 
 void Player::update(float delta, std::vector<Tile> map, std::vector<Enemy> enemies)
 {
-    Vector2 move = { 0.0f, 0.0f };
+    Vector2 force = { 0.0f, 0.0f };
     
     if (onTransition)
     {
@@ -66,11 +62,23 @@ void Player::update(float delta, std::vector<Tile> map, std::vector<Enemy> enemi
     {
         if (!dead)
         {
-            move.x += IsKeyDown(keys[1]) - IsKeyDown(keys[2]);
-            move.y += IsKeyDown(keys[3]) - IsKeyDown(keys[0]);
+            Vector2 input = {
+                float((IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D)) - (IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A))),
+                float((IsKeyDown(KEY_DOWN) || IsKeyDown(KEY_S)) - (IsKeyDown(KEY_UP) || IsKeyDown(KEY_W)))
+            };
+
+            // Apply movement based on screen rotation
+            float angle = -rotation*DEG2RAD;
+            float cosA = cosf(angle);
+            float sinA = sinf(angle);
+
+            force = {
+                input.x * cosA - input.y * sinA,
+                input.x * sinA + input.y * cosA
+            };
         }
     
-        rect.x += move.x * 300.0f * delta;
+        rect.x += force.x * 300.0f * delta;
         for (auto tile : map)
         {
             Rectangle tileRect = tile.getRect();
@@ -82,16 +90,16 @@ void Player::update(float delta, std::vector<Tile> map, std::vector<Enemy> enemi
                 }
                 if (tile.isSolid())
                 {
-                    if (move.x > 0.0f)
+                    if (force.x > 0.0f)
                         rect.x = tileRect.x - rect.width;
-                    if (move.x < 0.0f)
+                    if (force.x < 0.0f)
                         rect.x = tileRect.x + tileRect.width;
                     break;
                 }
             }
         }
 
-        rect.y += move.y * 300.0f * delta;
+        rect.y += force.y * 300.0f * delta;
         for (auto tile : map)
         {
             Rectangle tileRect = tile.getRect();
@@ -103,17 +111,17 @@ void Player::update(float delta, std::vector<Tile> map, std::vector<Enemy> enemi
                 }
                 if (tile.isSolid())
                 {
-                    if (move.y > 0)
+                    if (force.y > 0)
                         rect.y = tileRect.y - rect.height;
-                    if (move.y < 0)
+                    if (force.y < 0)
                         rect.y = tileRect.y + tileRect.height;
                     break;
                 }
             }
         }
 
-        if (std::abs(move.x+move.y) == 1)
-            facing = move;
+        if (std::round(std::abs(force.x + force.y)) == 1)
+            facing = force;
 
         if (!dead && IsKeyDown(KEY_Z) && shootTimer >= shootCooldown)
         {
@@ -157,25 +165,6 @@ void Player::setRotation(float rotation)
 
 void Player::setDirection(float direction)
 {
-    short temp = keys[0];
-    
-    if (direction < 0)
-    {
-        // Clockwise (backwards)
-        keys[0] = keys[1];
-        keys[1] = keys[3];
-        keys[3] = keys[2];
-        keys[2] = temp;
-    }
-    else
-    {
-        // Counterclockwise (forwards)
-        keys[0] = keys[2];
-        keys[2] = keys[3];
-        keys[3] = keys[1];
-        keys[1] = temp;
-    }
-
     this->direction = direction;
 }
 
